@@ -13,6 +13,20 @@ Imports System.IO
 Public Class APITest
     Inherits AbskintoneTest
 
+    Public Sub New()
+        'アカウント情報を上書きする場合に使用
+        'With kintoneAPI.Account
+        '    .Domain = ""
+        '    .AccessId = ""
+        '    .AccessPassword = ""
+        '    .LoginId = ""
+        '    .LoginPassword = ""
+        '    .Proxy = ""
+        '    .ProxyUser = ""
+        '    .ProxyPassword = ""
+        'End With
+    End Sub
+
     ''' <summary>
     ''' Readのテスト(単純に読み込みで例外が発生しないことを確認)
     ''' </summary>
