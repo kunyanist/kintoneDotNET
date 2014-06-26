@@ -42,6 +42,7 @@ Namespace API
 
             Dim result As String = ""
             For Each f As kintoneFieldConnector In query
+                If f.Field Is Nothing Then Continue For
                 If nameConvertor IsNot Nothing AndAlso nameConvertor.ContainsKey(f.Field.FieldName) Then
                     f.Field.FieldName = nameConvertor(f.Field.FieldName)
                 End If
@@ -183,7 +184,14 @@ Namespace API
                 End If
             End If
 
-            field = New kintoneQueryField(name, opr, valueToString(value))
+            If TypeOf value Is IList Then
+                Dim list As IList = CType(value, IList)
+                If list.Count > 0 Then
+                    field = New kintoneQueryField(name, opr, valueToString(value))
+                End If
+            Else
+                field = New kintoneQueryField(name, opr, valueToString(value))
+            End If
 
             Return field
 
@@ -224,7 +232,6 @@ Namespace API
                                               Select Expression.Lambda(x).Compile().DynamicInvoke).ToList
             Return result
         End Function
-
 
         Private Shared Function valueToString(ByVal obj As Object) As String
             Dim result As String = ""
