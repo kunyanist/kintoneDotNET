@@ -48,6 +48,15 @@
         Public Property LoginPassword As String = ""
 
         ''' <summary>
+        ''' kintoneのアプリごとに生成するAPIトークン。
+        ''' パスワードに優先する
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property ApiToken As String = ""
+
+        ''' <summary>
         ''' Proxyを経由する場合のアドレス
         ''' </summary>
         ''' <value></value>
@@ -86,6 +95,9 @@
             End If
             If ConfigurationManager.AppSettings.AllKeys.Contains("ktLoginId") = True Then
                 _LoginPassword = ConfigurationManager.AppSettings("ktLoginId")
+            End If
+            If ConfigurationManager.AppSettings.AllKeys.Contains("ktApiToken") = True Then
+                _apitoken = ConfigurationManager.AppSettings("ktApiToken")
             End If
             If ConfigurationManager.AppSettings.AllKeys.Contains("proxy") = True Then
                 _Proxy = ConfigurationManager.AppSettings("proxy")

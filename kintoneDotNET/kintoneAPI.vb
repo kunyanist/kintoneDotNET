@@ -174,6 +174,25 @@ Namespace API
             End Get
         End Property
 
+        ''' <summary>
+        ''' kintoneのAPIトークンを取得する
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Shared ReadOnly Property ApiToken As String
+            Get
+                Dim token As String = ""
+                If String.IsNullOrEmpty(_account.ApiToken) = False Then
+                    token = _account.ApiToken
+                ElseIf ConfigurationManager.AppSettings.AllKeys.Contains("ktApiToken") = True Then
+                    token = ConfigurationManager.AppSettings("ktApiToken")
+                End If
+
+                Return token
+            End Get
+        End Property
+
        ''' <summary>
         ''' Proxyを経由する場合、プロキシの設定を行う
         ''' </summary>
@@ -225,7 +244,13 @@ Namespace API
                 uri += "?" + query
             End If
             Dim request As HttpWebRequest = DirectCast(Net.WebRequest.Create(uri), HttpWebRequest)
-            request.Headers.Add("X-Cybozu-Authorization", LoginKey)
+
+            If Not String.IsNullOrEmpty(ApiToken) Then
+                request.Headers.Add("X-Cybozu-API-Token", ApiToken)
+            Else
+                request.Headers.Add("X-Cybozu-Authorization", LoginKey)
+            End If
+
             If Not String.IsNullOrEmpty(AccessKey) Then
                 request.Headers.Add("Authorization", "Basic " + AccessKey)
             End If

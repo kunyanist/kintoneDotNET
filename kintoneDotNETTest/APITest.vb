@@ -15,16 +15,17 @@ Public Class APITest
 
     Public Sub New()
         'アカウント情報を上書きする場合に使用
-        'With kintoneAPI.Account
-        '    .Domain = ""
-        '    .AccessId = ""
-        '    .AccessPassword = ""
-        '    .LoginId = ""
-        '    .LoginPassword = ""
-        '    .Proxy = ""
-        '    .ProxyUser = ""
-        '    .ProxyPassword = ""
-        'End With
+        With kintoneAPI.Account
+            .Domain = ""
+            .AccessId = ""
+            .AccessPassword = ""
+            .LoginId = ""
+            .LoginPassword = ""
+            .ApiToken = ""
+            .Proxy = ""
+            .ProxyUser = ""
+            .ProxyPassword = ""
+        End With
     End Sub
 
     ''' <summary>
