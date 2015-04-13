@@ -49,7 +49,7 @@
 
         ''' <summary>
         ''' kintoneのアプリごとに生成するAPIトークン。
-        ''' パスワードに優先する
+        ''' 設定されている場合、ログインID/パスワードより優先される。
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
@@ -80,34 +80,40 @@
         ''' <remarks></remarks>
         Public Property ProxyPassword As String = ""
 
-        Public Sub New()
-            If ConfigurationManager.AppSettings.AllKeys.Contains("ktDomain") = True Then
-                _Domain = ConfigurationManager.AppSettings("ktDomain")
-            End If
-            If ConfigurationManager.AppSettings.AllKeys.Contains("ktAccessId") = True Then
-                _AccessId = ConfigurationManager.AppSettings("ktAccessId")
-            End If
-            If ConfigurationManager.AppSettings.AllKeys.Contains("ktAccessPassword") = True Then
-                _AccessPassword = ConfigurationManager.AppSettings("ktAccessPassword")
-            End If
-            If ConfigurationManager.AppSettings.AllKeys.Contains("ktLoginId") = True Then
-                _LoginId = ConfigurationManager.AppSettings("ktLoginId")
-            End If
-            If ConfigurationManager.AppSettings.AllKeys.Contains("ktLoginId") = True Then
-                _LoginPassword = ConfigurationManager.AppSettings("ktLoginId")
-            End If
-            If ConfigurationManager.AppSettings.AllKeys.Contains("ktApiToken") = True Then
-                _apitoken = ConfigurationManager.AppSettings("ktApiToken")
-            End If
-            If ConfigurationManager.AppSettings.AllKeys.Contains("proxy") = True Then
-                _Proxy = ConfigurationManager.AppSettings("proxy")
-            End If
-            If ConfigurationManager.AppSettings.AllKeys.Contains("proxyUser") = True Then
-                _ProxyUser = ConfigurationManager.AppSettings("proxyUser")
-            End If
-            If ConfigurationManager.AppSettings.AllKeys.Contains("proxyPassword") = True Then
-                _ProxyPassword = ConfigurationManager.AppSettings("proxyPassword")
-            End If
+        Public Sub New(Optional ByVal domain As String = "",
+                       Optional ByVal accessId As String = "",
+                       Optional ByVal accessPassword As String = "",
+                       Optional ByVal loginId As String = "",
+                       Optional ByVal loginPassword As String = "",
+                       Optional ByVal apiToken As String = "",
+                       Optional ByVal proxy As String = "",
+                       Optional ByVal proxyUser As String = "",
+                       Optional ByVal proxyPassword As String = "")
+
+            For Each config As String In ConfigurationManager.AppSettings.AllKeys
+                Dim value As String = ConfigurationManager.AppSettings(config)
+                Select Case config
+                    Case "ktDomain"
+                        _Domain = If(Not String.IsNullOrEmpty(domain), domain, value)
+                    Case "ktAccessId"
+                        _AccessId = If(Not String.IsNullOrEmpty(accessId), accessId, value)
+                    Case "ktAccessPassword"
+                        _AccessPassword = If(Not String.IsNullOrEmpty(accessPassword), accessPassword, value)
+                    Case "ktLoginId"
+                        _LoginId = If(Not String.IsNullOrEmpty(loginId), loginId, value)
+                    Case "ktLoginPassword"
+                        _LoginPassword = If(Not String.IsNullOrEmpty(loginPassword), loginPassword, value)
+                    Case "ktApiToken"
+                        _ApiToken = If(Not String.IsNullOrEmpty(apiToken), apiToken, value)
+                    Case "proxy"
+                        _Proxy = If(Not String.IsNullOrEmpty(proxy), proxy, value)
+                    Case "proxyUser"
+                        _ProxyUser = If(Not String.IsNullOrEmpty(proxyUser), proxyUser, value)
+                    Case "proxyPassword"
+                        _ProxyPassword = If(Not String.IsNullOrEmpty(proxyPassword), proxyPassword, value)
+                End Select
+            Next
+
         End Sub
 
     End Class
